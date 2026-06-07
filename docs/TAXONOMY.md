@@ -411,7 +411,7 @@ Dual purpose — support allies and disrupt enemies.
 | **Mesmer (Domination)** | Interrupt enemy monks, energy denial, shutdown hexes | Power Drain, Power Leak, Diversion, Shame |
 | **Mesmer (Illusion)** | Pressure damage, snares | Clumsiness, Wandering Eye |
 | **Elementalist** | Spike damage, knockdowns, wards | Mind Burn, Gust, Gale, Ward Against Foes |
-| **Necromancer** | Hex pressure, healing reduction, cover hexes | Shadow Shroud, Lingering Curse, Parasitic Bond |
+| **Necromancer** | Hex pressure, healing reduction, cover hexes | Lingering Curse, Parasitic Bond, Suffering, Faintheartedness |
 | **Ranger** | Interrupts, Apply Poison, split pressure | Savage Shot, Distracting Shot, Broad Head Arrow (Daze) |
 | **Paragon** | Shout support, spike damage (spear) | "Go for the Eyes!", Cruel Spear, defensive shouts |
 
@@ -459,8 +459,8 @@ in GvG.
 
 **Anatomy of a spike:**
 
-1. **Setup** (T-7s to T-3s): Apply hexes (Shadow Shroud for healing reduction,
-   cover hexes), strip key enchantments, apply Deep Wound.
+1. **Setup** (T-7s to T-3s): Apply hexes (Shadow Shroud to block enchantments
+   on the target, cover hexes), strip key enchantments, apply Deep Wound.
 2. **Call** (T-3s): Spike caller Ctrl+Clicks the target. Begins countdown.
 3. **Execution** (T-0): All damage skills land within a ~1-second window.
    Warriors use Eviscerate + Executioner's Strike. Midline adds burst damage.
@@ -617,7 +617,30 @@ the enemy has AoE pressure, ball when they need efficient healing.
 
 ## 9. Advanced Mechanical Concepts
 
-### 9.1 Deep Wound in Spikes
+### 9.1 Shadow Shroud (Enchantment Denial)
+
+An **Assassin elite hex** (Shadow Arts, Factions campaign). For 3–9 seconds,
+the target **cannot be the target of enchantments**. This is arguably the
+most devastating spike-setup hex in GvG because it completely disables the
+Monk's primary defensive tools:
+
+- Monks cannot cast Protective Spirit, Spirit Bond, Guardian, Shield of
+  Absorption, or any targeted enchantment on the shrouded ally.
+- The only defensive options remaining are: weapon spells (Ritualist, cannot
+  be blocked by Shadow Shroud), non-targeted heals, or pre-existing
+  enchantments applied before the hex landed.
+
+**0.25s cast time** — nearly impossible to interrupt, making it extremely
+reliable as a spike setup tool.
+
+**AegisSpike classification:** Shadow Shroud application transitions the
+target to S1 (Vulnerable). Its persistence into the spike window is tracked
+via the state-persistence model (t_eff). When Shadow Shroud is active during
+a spike, the engine awards full credit to the caster regardless of when it
+was applied, because its effect is continuously denying enchantment-based
+saves.
+
+### 9.2 Deep Wound in Spikes
 
 Deep Wound (-20% max HP) is not just a stat reduction — it fundamentally
 changes the math of a spike:
@@ -628,7 +651,7 @@ changes the math of a spike:
 - **AegisSpike classification:** Applying Deep Wound transitions the target
   to S1 (Vulnerable).
 
-### 9.2 Cover Hex Mechanics
+### 9.3 Cover Hex Mechanics
 
 Because hex removal is LIFO (removes the most recent hex first), attackers
 protect valuable hexes by applying a cheap "cover hex" on top:
@@ -643,7 +666,7 @@ protect valuable hexes by applying a cheap "cover hex" on top:
 threat, the cover hex caster earns **Virtual Damage Prevented (VDP)** — the
 estimated healing that would have landed if the primary hex had been removed.
 
-### 9.3 Locked-State Vulnerability
+### 9.4 Locked-State Vulnerability
 
 When a player begins a skill with a long cast time (≥1.5s), they enter a
 **Locked Vulnerability State**. During this animation:
@@ -663,7 +686,7 @@ When a player begins a skill with a long cast time (≥1.5s), they enter a
 - **Locked-State Exploitation:** Successfully interrupting a player in a
   locked state scores 2.5× the normal interrupt value.
 
-### 9.4 Cooldown Desynchronization
+### 9.5 Cooldown Desynchronization
 
 Key defensive skills (Protective Spirit, Spirit Bond, Aegis) have recharges
 of 5–30 seconds. If a spike team can execute a second spike *faster* than
@@ -674,14 +697,14 @@ skills.
 spikes. If κ ≤ 10s, the enemy's defensive cooldowns are desynchronized,
 and the second spike receives a 1.5× Strategic Synergy Multiplier.
 
-### 9.5 Quarterknocking
+### 9.6 Quarterknocking
 
 An advanced warrior technique using fast attack speed (+33% from IAS stance)
 combined with Stonefist Insignia (+1 second knockdown duration) to chain
 knockdowns with hammers. The target is kept on the ground continuously,
 unable to act.
 
-### 9.6 Weapon Swap as Tell
+### 9.7 Weapon Swap as Tell
 
 Experienced players read enemy weapon swaps for information:
 
@@ -691,7 +714,7 @@ Experienced players read enemy weapon swaps for information:
   AegisSpike quantifies this via the weapon-set lethality delta.
 - **Monk swaps to shield set:** Expects incoming damage on themselves.
 
-### 9.7 Energy Tax and Attrition
+### 9.8 Energy Tax and Attrition
 
 Even failed spikes serve a strategic purpose by forcing the enemy to spend
 disproportionate resources to survive:

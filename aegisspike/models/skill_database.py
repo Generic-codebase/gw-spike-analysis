@@ -131,17 +131,22 @@ _add(SkillData(
 ))
 
 # ---------------------------------------------------------------------------
-# Necromancer — hexes, cover hexes, pressure
+# Assassin — Shadow Shroud (elite hex, Shadow Arts)
 # ---------------------------------------------------------------------------
 _add(SkillData(
     name="Shadow Shroud",
     skill_type=SkillType.HEX,
-    cast_time_ms=1000,
-    recharge_ms=5000,
-    energy_cost=10,
+    cast_time_ms=250,
+    recharge_ms=20000,
+    energy_cost=5,
+    is_elite=True,
     is_primary_threat_hex=True,
-    expected_duration_ms=10000,
+    expected_duration_ms=8000,
 ))
+
+# ---------------------------------------------------------------------------
+# Necromancer — hexes, cover hexes, pressure
+# ---------------------------------------------------------------------------
 _add(SkillData(
     name="Faintheartedness",
     skill_type=SkillType.HEX,
